@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rixdorf Studios</title>
+  <meta name="description" content="Simple, beautiful, ad-free games. Made with love in Berlin.">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d0d1a;
+      color: #f0ecff;
+      min-height: 100vh;
+    }
+    header {
+      padding: 48px 24px 32px;
+      text-align: center;
+      border-bottom: 1px solid #2a2040;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #9E7AEB;
+      letter-spacing: -0.5px;
+    }
+    .tagline {
+      margin-top: 8px;
+      color: #8878aa;
+      font-size: 16px;
+    }
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+    h2 {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #6C4EC9;
+      margin-bottom: 24px;
+    }
+    .apps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 64px;
+    }
+    .app-card {
+      background: #1a1430;
+      border: 1px solid #2a2040;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .app-card:hover { border-color: #6C4EC9; }
+    .app-icon {
+      font-size: 48px;
+      flex-shrink: 0;
+    }
+    .app-info h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .app-info p {
+      font-size: 14px;
+      color: #8878aa;
+      line-height: 1.5;
+    }
+    .badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 10px;
+      background: #6C4EC9;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 64px;
+    }
+    .value-item {
+      background: #1a1430;
+      border: 1px solid #2a2040;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 14px;
+    }
+    .value-item span {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    footer {
+      text-align: center;
+      padding: 32px 24px 48px;
+      border-top: 1px solid #2a2040;
+      color: #8878aa;
+      font-size: 14px;
+    }
+    footer a { color: #9E7AEB; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Rixdorf Studios</div>
+    <div class="tagline">Simple, beautiful, ad-free games. Made with love in Berlin.</div>
+  </header>
+
+  <main>
+    <h2>Our Apps</h2>
+    <div class="apps">
+      <a class="app-card" href="https://apps.apple.com/app/id6774253243" target="_blank">
+        <div class="app-icon">🃏</div>
+        <div class="app-info">
+          <h3>Solitaire Klara</h3>
+          <p>Classic Klondike Solitaire. 5 themes, 36 card backs, 4 languages. No ads, ever.</p>
+          <span class="badge">Available on iOS</span>
+        </div>
+      </a>
+      <a class="app-card" href="#" target="_blank">
+        <div class="app-icon">🔢</div>
+        <div class="app-info">
+          <h3>Sudoku Klara</h3>
+          <p>Daily challenges, achievements, and a beautiful design. Coming soon.</p>
+          <span class="badge">Coming Soon</span>
+        </div>
+      </a>
+    </div>
+
+    <h2>Our Promise</h2>
+    <div class="values">
+      <div class="value-item"><span>🚫</span>No ads. Ever.</div>
+      <div class="value-item"><span>🔒</span>No tracking or data collection.</div>
+      <div class="value-item"><span>📱</span>Works fully offline.</div>
+      <div class="value-item"><span>💜</span>One-time purchase. No subscriptions.</div>
+    </div>
+
+    <h2>Contact</h2>
+    <p style="color: #8878aa; font-size: 15px; line-height: 1.7;">
+      Questions, feedback, or press inquiries:<br>
+      <a href="mailto:rixdorf.studio@gmail.com" style="color: #9E7AEB;">rixdorf.studio@gmail.com</a>
+    </p>
+  </main>
+
+  <footer>
+    <div>© 2026 Rixdorf Studios · Berlin, Germany</div>
+    <div class="footer-links">
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/imprint">Imprint</a>
+    </div>
+  </footer>
+</body>
+</html>
