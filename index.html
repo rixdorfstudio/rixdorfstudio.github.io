@@ -3,116 +3,187 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rixdorf Studios — Crafted Games for Everyone</title>
-  <meta name="description" content="Rixdorf Studios builds beautiful, ad-free mobile games. Focused on quality, privacy, and joy." />
+  <title>Rixdorf Studios — Classic Games, Crafted with Care</title>
+  <meta name="description" content="Rixdorf Studios is an independent game studio in Berlin building beautiful, privacy-first mobile games. No dark patterns. No subscriptions. Just great games." />
+  <meta property="og:title" content="Rixdorf Studios — Classic Games, Crafted with Care" />
+  <meta property="og:description" content="Independent game studio in Berlin. Beautiful, privacy-first mobile games — no dark patterns, no subscriptions." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://rixdorfstudio.github.io/" />
+  <meta property="og:image" content="https://rixdorfstudio.github.io/solitaire-icon.png" />
   <link rel="icon" type="image/png" href="solitaire-icon.png" />
   <link rel="apple-touch-icon" href="solitaire-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+  <!-- Fonts self-hosted (GDPR: no requests to Google servers) -->
+  <link rel="stylesheet" href="/fonts.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Rixdorf Studios",
+    "url": "https://rixdorfstudio.github.io/",
+    "logo": "https://rixdorfstudio.github.io/solitaire-icon.png",
+    "foundingDate": "2026",
+    "founder": { "@type": "Person", "name": "Bruno Herzog" },
+    "address": { "@type": "PostalAddress", "addressLocality": "Berlin", "addressCountry": "DE" },
+    "email": "rixdorf.studio@gmail.com",
+    "description": "Independent game studio in Berlin building privacy-first classic mobile games."
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --purple-deep:   #1a0a2e;
-      --purple-mid:    #2d1060;
-      --purple-bright: #7c3aed;
-      --purple-light:  #a855f7;
-      --purple-glow:   #c084fc;
-      --gold:          #f59e0b;
-      --gold-light:    #fbbf24;
-      --white:         #ffffff;
-      --white-80:      rgba(255,255,255,0.8);
-      --white-40:      rgba(255,255,255,0.4);
-      --white-10:      rgba(255,255,255,0.1);
-      --white-05:      rgba(255,255,255,0.05);
+      --bg:            #0a0514;
+      --bg-raise:      #120a24;
+      --panel:         rgba(255,255,255,0.04);
+      --panel-hover:   rgba(255,255,255,0.07);
+      --line:          rgba(255,255,255,0.09);
+      --line-strong:   rgba(167,139,250,0.45);
+      --violet:        #8b5cf6;
+      --violet-light:  #a78bfa;
+      --violet-glow:   #c4b5fd;
+      --gold:          #f5b031;
+      --gold-light:    #fcd34d;
+      --ink:           #ffffff;
+      --ink-70:        rgba(255,255,255,0.72);
+      --ink-45:        rgba(255,255,255,0.45);
+      --font-display:  'Space Grotesk', 'Inter', sans-serif;
+      --font-body:     'Inter', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--purple-deep);
-      color: var(--white);
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ── NAV ACCENT LINE ── */
-    nav::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.6), rgba(168,85,247,0.4), transparent);
-    }
+    ::selection { background: rgba(139,92,246,0.5); }
 
-    /* ── HERO PLATFORM BADGE ── */
-    .hero-platform {
-      margin-top: 28px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--white-40);
-      letter-spacing: 0.04em;
-      opacity: 0;
-      animation: fadeUp 0.8s 1s forwards;
-    }
-    .hero-platform svg { opacity: 0.5; }
-
-    /* ── CANVAS BACKGROUND ── */
+    /* ── BACKGROUND LAYERS ── */
     #starfield {
       position: fixed;
       inset: 0;
       z-index: 0;
       pointer-events: none;
     }
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.35;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .orb-1 { width: 560px; height: 560px; background: #4c1d95; top: -180px; left: -140px; }
+    .orb-2 { width: 480px; height: 480px; background: #6d28d9; top: 30vh; right: -200px; opacity: 0.22; }
+    .orb-3 { width: 520px; height: 520px; background: #3b0764; bottom: -220px; left: 30vw; opacity: 0.3; }
 
     /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      padding: 20px 40px;
+      padding: 18px 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       backdrop-filter: blur(20px);
-      background: rgba(26,10,46,0.7);
-      border-bottom: 1px solid var(--white-10);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(10,5,20,0.65);
+      border-bottom: 1px solid var(--line);
       transition: background 0.3s;
+    }
+    nav::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(139,92,246,0.55), rgba(245,176,49,0.25), transparent);
     }
 
     .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
       font-weight: 700;
-      letter-spacing: 0.02em;
-      color: var(--white);
+      letter-spacing: 0.01em;
+      color: var(--ink);
       text-decoration: none;
     }
-    .nav-logo span { color: var(--purple-light); }
+    .nav-logo-mark {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--violet), #6d28d9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(139,92,246,0.45);
+    }
+    .nav-logo span { color: var(--violet-light); }
 
-    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
     .nav-links a {
-      color: var(--white-80);
+      color: var(--ink-70);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 500;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       transition: color 0.2s;
     }
-    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover { color: var(--ink); }
 
     .nav-cta {
-      background: var(--purple-bright);
-      color: var(--white) !important;
-      padding: 8px 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: linear-gradient(135deg, var(--violet), #7c3aed);
+      color: var(--ink) !important;
+      padding: 9px 20px;
       border-radius: 100px;
-      transition: background 0.2s, transform 0.2s !important;
+      box-shadow: 0 4px 20px rgba(139,92,246,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .nav-cta:hover { background: var(--purple-light) !important; transform: translateY(-1px); }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(139,92,246,0.55); }
+
+    .nav-burger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 40px; height: 40px;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 99;
+      background: rgba(10,5,20,0.97);
+      backdrop-filter: blur(24px);
+      padding: 110px 32px 40px;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--ink);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 600;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
 
     /* ── HERO ── */
     #hero {
@@ -124,62 +195,63 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 120px 24px 80px;
+      padding: 140px 24px 60px;
     }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--white-10);
-      border: 1px solid var(--white-10);
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.35);
       border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 0.8rem;
+      padding: 7px 18px;
+      font-size: 0.76rem;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--purple-glow);
-      margin-bottom: 32px;
+      color: var(--violet-glow);
+      margin-bottom: 34px;
       opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
+      animation: fadeUp 0.8s 0.15s forwards;
     }
     .hero-badge::before {
       content: '';
       width: 6px; height: 6px;
       border-radius: 50%;
-      background: var(--purple-light);
-      animation: pulse 2s infinite;
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold);
+      animation: pulse 2.4s infinite;
     }
 
     .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 900;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
+      font-family: var(--font-display);
+      font-size: clamp(2.9rem, 8vw, 6.2rem);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      margin-bottom: 26px;
       opacity: 0;
-      animation: fadeUp 0.8s 0.4s forwards;
+      animation: fadeUp 0.8s 0.3s forwards;
     }
-
-    .hero-title .line-highlight {
-      background: linear-gradient(135deg, var(--purple-light), var(--gold-light));
+    .hero-title .grad {
+      background: linear-gradient(120deg, var(--violet-light) 10%, var(--violet-glow) 40%, var(--gold-light) 90%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     .hero-sub {
-      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-size: clamp(1rem, 2vw, 1.2rem);
       font-weight: 400;
-      color: var(--white-80);
-      max-width: 560px;
-      line-height: 1.7;
-      margin-bottom: 48px;
+      color: var(--ink-70);
+      max-width: 580px;
+      line-height: 1.75;
+      margin-bottom: 44px;
       opacity: 0;
-      animation: fadeUp 0.8s 0.6s forwards;
+      animation: fadeUp 0.8s 0.45s forwards;
     }
+    .hero-sub strong { color: var(--ink); font-weight: 600; }
 
     .hero-actions {
       display: flex;
@@ -187,320 +259,502 @@
       flex-wrap: wrap;
       justify-content: center;
       opacity: 0;
-      animation: fadeUp 0.8s 0.8s forwards;
+      animation: fadeUp 0.8s 0.6s forwards;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--purple-bright), var(--purple-light));
-      color: var(--white);
-      padding: 14px 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: linear-gradient(135deg, #7c3aed, var(--violet));
+      color: var(--ink);
+      padding: 15px 32px;
       border-radius: 100px;
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 600;
       text-decoration: none;
       border: none;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 40px rgba(124,58,237,0.4);
+      box-shadow: 0 8px 32px rgba(124,58,237,0.4);
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 60px rgba(124,58,237,0.6); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 44px rgba(124,58,237,0.6); }
 
     .btn-ghost {
-      background: transparent;
-      color: var(--white-80);
-      padding: 14px 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: rgba(255,255,255,0.03);
+      color: var(--ink-70);
+      padding: 15px 32px;
       border-radius: 100px;
-      font-size: 1rem;
+      font-size: 0.98rem;
       font-weight: 600;
       text-decoration: none;
-      border: 1px solid var(--white-40);
+      border: 1px solid rgba(255,255,255,0.18);
       cursor: pointer;
-      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s, background 0.2s;
     }
-    .btn-ghost:hover { border-color: var(--white); color: var(--white); transform: translateY(-2px); }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.5); color: var(--ink); transform: translateY(-2px); background: rgba(255,255,255,0.06); }
+
+    /* Fanned playing cards */
+    .hero-cards {
+      position: relative;
+      height: 190px;
+      width: 420px;
+      max-width: 90vw;
+      margin-top: 64px;
+      opacity: 0;
+      animation: fadeUp 1s 0.8s forwards;
+    }
+    .pcard {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 104px;
+      height: 148px;
+      border-radius: 12px;
+      background: linear-gradient(160deg, #ffffff 0%, #f1eafe 100%);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.14);
+      transform-origin: 50% 130%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+    }
+    .pcard .corner {
+      position: absolute;
+      top: 8px; left: 9px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.05;
+      text-align: center;
+    }
+    .pcard .pip { font-size: 2.5rem; }
+    .pcard.red  { color: #dc2626; }
+    .pcard.dark { color: #1e1b4b; }
+    .pcard.gold {
+      background: linear-gradient(160deg, #2d1060 0%, #4c1d95 100%);
+      color: var(--gold-light);
+      box-shadow: 0 18px 50px rgba(76,29,149,0.7), 0 0 0 1px rgba(245,176,49,0.4);
+    }
+    .pcard-1 { transform: translateX(-50%) rotate(-24deg); animation: cardFloat 6s 0s ease-in-out infinite; }
+    .pcard-2 { transform: translateX(-50%) rotate(-12deg); animation: cardFloat 6s 0.4s ease-in-out infinite; }
+    .pcard-3 { transform: translateX(-50%) rotate(0deg);   animation: cardFloat 6s 0.8s ease-in-out infinite; z-index: 2; }
+    .pcard-4 { transform: translateX(-50%) rotate(12deg);  animation: cardFloat 6s 1.2s ease-in-out infinite; }
+    .pcard-5 { transform: translateX(-50%) rotate(24deg);  animation: cardFloat 6s 1.6s ease-in-out infinite; }
+
+    @keyframes cardFloat {
+      0%, 100% { margin-bottom: 0; }
+      50%      { margin-bottom: 10px; }
+    }
 
     .hero-scroll {
       position: absolute;
-      bottom: 40px;
+      bottom: 32px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      color: var(--white-40);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
+      color: var(--ink-45);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      animation: fadeUp 1s 1.4s forwards;
+      animation: fadeUp 1s 1.6s forwards;
       opacity: 0;
     }
     .scroll-line {
       width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--white-40), transparent);
+      height: 36px;
+      background: linear-gradient(to bottom, var(--ink-45), transparent);
       animation: scrollPulse 2s infinite;
     }
 
     /* ── SECTION SHARED ── */
-    section {
-      position: relative;
-      z-index: 1;
-    }
+    section { position: relative; z-index: 1; }
 
     .section-inner {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 100px 24px;
+      padding: 110px 24px;
     }
 
     .section-tag {
-      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.74rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--purple-light);
-      margin-bottom: 12px;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .section-tag::before {
+      content: '';
+      width: 22px; height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
     }
 
     .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 900;
-      line-height: 1.1;
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.4vw, 3.3rem);
+      font-weight: 700;
+      line-height: 1.08;
       letter-spacing: -0.02em;
       margin-bottom: 20px;
     }
 
     .section-sub {
-      color: var(--white-80);
-      font-size: 1.05rem;
-      line-height: 1.7;
-      max-width: 560px;
+      color: var(--ink-70);
+      font-size: 1.03rem;
+      line-height: 1.75;
+      max-width: 590px;
     }
 
     /* ── NUMBERS BAR ── */
     #numbers {
-      background: var(--white-05);
-      border-top: 1px solid var(--white-10);
-      border-bottom: 1px solid var(--white-10);
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(139,92,246,0.06), rgba(139,92,246,0.02));
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
     }
-
     .numbers-grid {
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 60px 24px;
+      padding: 56px 24px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 40px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 28px;
       text-align: center;
     }
-
-    .number-item {}
     .number-value {
-      font-family: 'Playfair Display', serif;
-      font-size: 3rem;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--purple-light), var(--gold-light));
+      font-family: var(--font-display);
+      font-size: 2.9rem;
+      font-weight: 700;
+      background: linear-gradient(120deg, var(--violet-light), var(--gold-light));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      line-height: 1;
-      margin-bottom: 8px;
+      line-height: 1.1;
+      margin-bottom: 6px;
     }
     .number-label {
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 500;
-      color: var(--white-80);
+      color: var(--ink-70);
       letter-spacing: 0.03em;
     }
 
-    /* ── GAMES ── */
-    .games-grid {
+    /* ── LIVE GAMES ── */
+    .live-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-      margin-top: 60px;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 56px;
     }
 
-    .game-card {
-      background: var(--white-05);
-      border: 1px solid var(--white-10);
-      border-radius: 24px;
+    .live-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 28px;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
       transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-      cursor: default;
     }
-    .game-card:hover {
+    .live-card:hover {
       transform: translateY(-6px);
-      border-color: var(--purple-light);
-      box-shadow: 0 20px 60px rgba(124,58,237,0.25);
+      border-color: var(--line-strong);
+      box-shadow: 0 24px 70px rgba(124,58,237,0.22);
     }
 
-    .game-card-header {
-      height: 220px;
+    .live-stage {
+      height: 340px;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
       position: relative;
       overflow: hidden;
     }
-
-    .game-card-header.solitaire {
-      background: linear-gradient(135deg, #2d1060 0%, #4c1d95 50%, #1e1b4b 100%);
+    .live-stage.solitaire { background: radial-gradient(ellipse at 50% 0%, #4c1d95 0%, #2d1060 55%, #1b0b38 100%); }
+    .live-stage.sudoku    { background: radial-gradient(ellipse at 50% 0%, #9d174d 0%, #6b1039 55%, #3f0a23 100%); }
+    .stage-glow {
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
     }
-    .game-card-header.sudoku {
-      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-    }
 
-    .game-icon {
-      width: 100px;
-      height: 100px;
-      border-radius: 24px;
-      object-fit: cover;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    /* Phone mockup */
+    .phone {
+      width: 218px;
+      height: 300px;
+      background: #0c0618;
+      border-radius: 34px 34px 0 0;
+      border: 7px solid #241636;
+      border-bottom: none;
       position: relative;
       z-index: 1;
+      overflow: hidden;
+      box-shadow: 0 -4px 60px rgba(0,0,0,0.5);
     }
+    .phone::before {
+      content: '';
+      position: absolute;
+      top: 8px; left: 50%;
+      transform: translateX(-50%);
+      width: 62px; height: 16px;
+      background: #241636;
+      border-radius: 100px;
+      z-index: 3;
+    }
+    .phone-screen {
+      position: absolute;
+      inset: 0;
+      padding: 34px 12px 12px;
+    }
+    .phone-screen.felt-purple { background: linear-gradient(180deg, #34176b, #240f4d); }
+    .phone-screen.felt-rose   { background: linear-gradient(180deg, #55112f, #3a0b20); }
 
-    .game-icon-placeholder {
-      width: 100px;
-      height: 100px;
-      border-radius: 24px;
+    /* Mini solitaire board */
+    .mini-topbar {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .mini-slot {
+      width: 22px; height: 30px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+    .mini-slot.filled-back { background: linear-gradient(135deg, #7c3aed, #5b21b6); border-color: rgba(255,255,255,0.35); }
+    .mini-slot.filled-face { background: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 700; }
+    .mini-slot .r { color: #dc2626; } .mini-slot .b { color: #1e1b4b; }
+    .mini-cols { display: flex; gap: 4px; justify-content: space-between; }
+    .mini-col { display: flex; flex-direction: column; width: 22px; }
+    .mini-card {
+      width: 22px; height: 30px;
+      border-radius: 4px;
+      margin-top: -20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .mini-col .mini-card:first-child { margin-top: 0; }
+    .mini-card.back { background: linear-gradient(135deg, #7c3aed, #5b21b6); border: 1px solid rgba(255,255,255,0.3); }
+    .mini-card.face { background: #fff; display: flex; align-items: flex-start; justify-content: flex-start; padding: 1px 3px; font-size: 0.56rem; font-weight: 700; }
+    .mini-card.face.r { color: #dc2626; } .mini-card.face.b { color: #1e1b4b; }
+
+    /* Mini sudoku board */
+    .mini-sudoku {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.16);
+      border: 2px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .su-cell {
+      aspect-ratio: 1;
+      background: rgba(255,255,255,0.94);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 3rem;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
-      position: relative;
-      z-index: 1;
+      font-size: 0.58rem;
+      font-weight: 600;
+      color: #3f0a23;
+    }
+    .su-cell.given { color: #0f172a; font-weight: 700; }
+    .su-cell.hl { background: #fbcfe8; }
+    .su-cell.sel { background: #f472b6; color: #fff; }
+    .su-cell:nth-child(3n) { border-right: 1px solid rgba(63,10,35,0.35); }
+    .mini-numrow {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .mini-num {
+      width: 17px; height: 22px;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .card-glow {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.4;
-    }
-
-    .game-card-featured { max-width: 100%; }
-    .game-card-featured .game-card-body { padding: 36px; }
-
-    .game-card-body { padding: 28px; }
+    .live-body { padding: 30px 32px 34px; display: flex; flex-direction: column; flex: 1; }
 
     .game-status {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .status-live { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+    .status-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+    .status-dev  { background: rgba(251,191,36,0.1); color: var(--gold-light); border: 1px solid rgba(251,191,36,0.28); }
+
+    .game-name {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .game-desc {
+      font-size: 0.92rem;
+      color: var(--ink-70);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+    .game-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .game-tag {
+      font-size: 0.73rem;
+      font-weight: 500;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--line);
+      color: var(--ink-70);
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+    .live-body .btn-primary { align-self: flex-start; margin-top: auto; font-size: 0.88rem; padding: 12px 26px; }
+    .btn-soon {
+      align-self: flex-start;
+      margin-top: auto;
+      font-size: 0.88rem;
+      padding: 12px 26px;
+      border-radius: 100px;
+      border: 1px solid var(--line);
+      color: var(--ink-45);
+      font-weight: 600;
+    }
+
+    /* ── COMING SOON GRID ── */
+    .soon-heading {
+      margin-top: 90px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .soon-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .soon-note { font-size: 0.85rem; color: var(--ink-45); }
+
+    .soon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 28px;
+    }
+    .soon-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 26px 24px;
+      transition: transform 0.3s, border-color 0.3s, background 0.3s;
+    }
+    .soon-card:hover { transform: translateY(-4px); border-color: var(--line-strong); background: var(--panel-hover); }
+    .soon-icon {
+      width: 54px; height: 54px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .soon-name {
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .soon-desc { font-size: 0.83rem; color: var(--ink-70); line-height: 1.55; margin-bottom: 14px; }
+    .soon-date {
       font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 100px;
-      margin-bottom: 12px;
+      color: var(--gold);
     }
-    .status-live { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
-    .status-dev  { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
 
-    .game-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
+    /* ── PRINCIPLES ── */
+    #principles { background: linear-gradient(180deg, transparent, rgba(45,16,96,0.28) 50%, transparent); }
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      margin-top: 56px;
+    }
+    .principle {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 32px 28px;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .principle:hover { transform: translateY(-4px); border-color: var(--line-strong); }
+    .principle-num {
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .principle-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
       font-weight: 700;
       margin-bottom: 10px;
     }
+    .principle-text { font-size: 0.87rem; color: var(--ink-70); line-height: 1.65; }
 
-    .game-desc {
-      font-size: 0.9rem;
-      color: var(--white-80);
-      line-height: 1.6;
-      margin-bottom: 20px;
+    .studio-quote {
+      margin-top: 80px;
+      text-align: center;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
     }
-
-    .game-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .game-tag {
-      font-size: 0.75rem;
-      font-weight: 500;
-      background: var(--white-10);
-      color: var(--white-80);
-      padding: 4px 12px;
-      border-radius: 100px;
+    .studio-quote-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.2vw, 2.3rem);
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
     }
-
-    /* ── VISION ── */
-    #vision { background: linear-gradient(180deg, transparent 0%, rgba(45,16,96,0.4) 50%, transparent 100%); }
-
-    .vision-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      margin-top: 0;
-    }
-
-    .vision-pillars {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 48px;
-    }
-
-    .pillar {
-      background: var(--white-05);
-      border: 1px solid var(--white-10);
-      border-radius: 16px;
-      padding: 24px;
-      transition: border-color 0.3s;
-    }
-    .pillar:hover { border-color: var(--purple-light); }
-
-    .pillar-icon {
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-    }
-    .pillar-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-    .pillar-text {
-      font-size: 0.82rem;
-      color: var(--white-80);
-      line-height: 1.5;
-    }
-
-    .vision-quote {
-      position: relative;
-    }
-    .vision-quote-mark {
-      font-family: 'Playfair Display', serif;
-      font-size: 8rem;
-      line-height: 0;
-      color: var(--purple-mid);
-      position: absolute;
-      top: 40px;
-      left: -20px;
-      select: none;
-    }
-    .vision-quote-text {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.4rem, 2.5vw, 2rem);
-      font-weight: 700;
-      line-height: 1.4;
-      position: relative;
-      z-index: 1;
-      padding-top: 20px;
-      color: var(--white);
-    }
-    .vision-quote-text em {
+    .studio-quote-text em {
       font-style: normal;
-      color: var(--purple-light);
-    }
-    .vision-quote-author {
-      margin-top: 24px;
-      font-size: 0.85rem;
-      color: var(--white-40);
-      font-style: italic;
+      background: linear-gradient(120deg, var(--violet-light), var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     /* ── ROADMAP ── */
@@ -508,7 +762,6 @@
       margin-top: 60px;
       display: flex;
       flex-direction: column;
-      gap: 0;
       position: relative;
     }
     .roadmap-list::before {
@@ -518,283 +771,261 @@
       top: 8px;
       bottom: 8px;
       width: 2px;
-      background: linear-gradient(to bottom, var(--purple-bright), var(--purple-mid), transparent);
+      background: linear-gradient(to bottom, var(--violet), rgba(139,92,246,0.25), transparent);
     }
-
     .roadmap-item {
       display: flex;
       gap: 32px;
-      padding: 0 0 48px 64px;
+      padding: 0 0 46px 66px;
       position: relative;
     }
     .roadmap-dot {
       position: absolute;
       left: 16px;
       top: 4px;
-      width: 18px;
-      height: 18px;
+      width: 18px; height: 18px;
       border-radius: 50%;
-      border: 2px solid var(--purple-bright);
-      background: var(--purple-deep);
+      border: 2px solid var(--violet);
+      background: var(--bg);
     }
     .roadmap-dot.active {
-      background: var(--purple-bright);
-      box-shadow: 0 0 16px rgba(124,58,237,0.6);
+      background: var(--violet);
+      box-shadow: 0 0 18px rgba(139,92,246,0.7);
     }
-    .roadmap-dot.future {
-      border-color: var(--white-40);
-    }
-
-    .roadmap-content {}
+    .roadmap-dot.future { border-color: rgba(255,255,255,0.3); }
     .roadmap-time {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--purple-light);
-      margin-bottom: 4px;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 5px;
     }
     .roadmap-title {
-      font-size: 1.1rem;
+      font-family: var(--font-display);
+      font-size: 1.14rem;
       font-weight: 700;
       margin-bottom: 6px;
     }
     .roadmap-desc {
-      font-size: 0.875rem;
-      color: var(--white-80);
-      line-height: 1.6;
+      font-size: 0.88rem;
+      color: var(--ink-70);
+      line-height: 1.65;
+      max-width: 640px;
     }
 
-    /* ── VALUES ── */
-    .values-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 24px;
-      margin-top: 60px;
-    }
-
-    .value-card {
-      background: var(--white-05);
-      border: 1px solid var(--white-10);
-      border-radius: 20px;
-      padding: 32px 28px;
-      transition: transform 0.3s, border-color 0.3s;
-    }
-    .value-card:hover { transform: translateY(-4px); border-color: rgba(124,58,237,0.5); }
-
-    .value-icon {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, var(--purple-bright), var(--purple-light));
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 20px;
-    }
-    .value-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .value-text {
-      font-size: 0.85rem;
-      color: var(--white-80);
-      line-height: 1.6;
-    }
-
-    /* ── TEAM / FOUNDER ── */
-
-    /* ── CONTACT ── */
-    #contact {
-      background: linear-gradient(180deg, transparent 0%, rgba(45,16,96,0.5) 100%);
-    }
-
-    .contact-box {
-      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(168,85,247,0.1));
-      border: 1px solid rgba(124,58,237,0.4);
-      border-radius: 32px;
-      padding: 72px;
-      text-align: center;
-      margin-top: 60px;
-      position: relative;
-      overflow: hidden;
-    }
-    /* ── ABOUT GRID ── */
+    /* ── STUDIO ── */
     .about-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+      gap: 18px;
       margin-top: 48px;
     }
     .about-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      background: var(--white-05);
-      border: 1px solid var(--white-10);
-      border-radius: 16px;
-      padding: 20px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
     }
-    .about-icon { font-size: 1.4rem; line-height: 1; margin-top: 2px; }
-    .about-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--white-40); margin-bottom: 4px; }
-    .about-value { font-size: 0.95rem; font-weight: 600; color: var(--white); }
+    .about-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--ink-45);
+      margin-bottom: 6px;
+    }
+    .about-value { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--ink); }
+    .about-value a { color: var(--violet-light); text-decoration: none; }
+    .about-value a:hover { color: var(--gold-light); }
 
+    .studio-story {
+      margin-top: 40px;
+      font-size: 0.95rem;
+      color: var(--ink-70);
+      line-height: 1.8;
+      max-width: 680px;
+    }
+    .studio-story strong { color: var(--ink); font-weight: 600; }
+
+    /* ── CONTACT ── */
+    #contact { background: linear-gradient(180deg, transparent, rgba(45,16,96,0.4)); }
+    .contact-box {
+      background: linear-gradient(135deg, rgba(124,58,237,0.16), rgba(245,176,49,0.05));
+      border: 1px solid rgba(139,92,246,0.4);
+      border-radius: 32px;
+      padding: 76px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
     .contact-box::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.2) 0%, transparent 70%);
+      background: radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.22), transparent 70%);
     }
     .contact-box > * { position: relative; z-index: 1; }
-
     .contact-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 900;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       margin-bottom: 16px;
     }
-    .contact-sub {
-      color: var(--white-80);
-      font-size: 1.05rem;
-      margin-bottom: 40px;
-    }
-    .contact-email {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--purple-light);
-      text-decoration: none;
-      border-bottom: 1px solid var(--purple-light);
-      padding-bottom: 2px;
-      transition: color 0.2s;
-    }
-    .contact-email:hover { color: var(--gold-light); border-color: var(--gold-light); }
+    .contact-sub { color: var(--ink-70); font-size: 1.02rem; margin-bottom: 36px; }
 
     /* ── FOOTER ── */
     footer {
       position: relative;
       z-index: 1;
-      padding: 40px 24px;
-      border-top: 1px solid var(--white-10);
+      border-top: 1px solid var(--line);
+      background: rgba(10,5,20,0.6);
+    }
+    .footer-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 44px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
-      max-width: 1100px;
-      margin: 0 auto;
+      gap: 18px;
     }
-
     .footer-logo {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
-    .footer-logo span { color: var(--purple-light); }
-
-    .footer-copy {
-      font-size: 0.8rem;
-      color: var(--white-40);
-    }
-
+    .footer-logo span { color: var(--violet-light); }
+    .footer-copy { font-size: 0.78rem; color: var(--ink-45); }
     .footer-links { display: flex; gap: 24px; }
     .footer-links a {
       font-size: 0.8rem;
-      color: var(--white-40);
+      color: var(--ink-45);
       text-decoration: none;
       transition: color 0.2s;
     }
-    .footer-links a:hover { color: var(--white-80); }
+    .footer-links a:hover { color: var(--ink); }
 
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.5; transform: scale(0.8); }
+      50%      { opacity: 0.4; transform: scale(0.75); }
     }
-
     @keyframes scrollPulse {
       0%, 100% { opacity: 0.4; }
-      50%       { opacity: 1; }
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-12px); }
+      50%      { opacity: 1; }
     }
 
     .reveal {
       opacity: 0;
-      transform: translateY(32px);
+      transform: translateY(30px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      .hero-badge, .hero-title, .hero-sub, .hero-actions, .hero-cards, .hero-scroll, .reveal { opacity: 1; transform: none; }
     }
 
     /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .live-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 768px) {
-      nav { padding: 16px 20px; }
+      nav { padding: 14px 20px; }
       .nav-links { display: none; }
-      .vision-grid { grid-template-columns: 1fr; }
-      .contact-box { padding: 40px 24px; }
-      footer { flex-direction: column; text-align: center; }
+      .nav-burger { display: flex; }
+      .section-inner { padding: 80px 20px; }
+      .contact-box { padding: 52px 24px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .hero-cards { height: 160px; }
+      .pcard { width: 88px; height: 126px; }
     }
   </style>
 </head>
 <body>
 
 <canvas id="starfield"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
 <!-- ── NAV ── -->
 <nav>
-  <a href="#" class="nav-logo">Rixdorf<span>Studios</span></a>
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-mark">♠</span>
+    Rixdorf<span>&nbsp;Studios</span>
+  </a>
   <ul class="nav-links">
     <li><a href="#games">Games</a></li>
-    <li><a href="#vision">Vision</a></li>
+    <li><a href="#principles">Principles</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#studio">Studio</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="https://apps.apple.com/app/id6774253243" target="_blank" class="nav-cta">↗ App Store</a></li>
+    <li><a href="https://apps.apple.com/app/id6774253243" target="_blank" rel="noopener" class="nav-cta">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      App Store</a></li>
   </ul>
+  <button class="nav-burger" aria-label="Menu" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+  </button>
 </nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#games" onclick="document.getElementById('mobileMenu').classList.remove('open')">Games</a>
+  <a href="#principles" onclick="document.getElementById('mobileMenu').classList.remove('open')">Principles</a>
+  <a href="#roadmap" onclick="document.getElementById('mobileMenu').classList.remove('open')">Roadmap</a>
+  <a href="#studio" onclick="document.getElementById('mobileMenu').classList.remove('open')">Studio</a>
+  <a href="#contact" onclick="document.getElementById('mobileMenu').classList.remove('open')">Contact</a>
+  <a href="https://apps.apple.com/app/id6774253243" target="_blank" rel="noopener">↗ App Store</a>
+</div>
 
 <!-- ── HERO ── -->
 <section id="hero">
-  <div class="hero-badge">Indie Game Studio · Berlin</div>
+  <div class="hero-badge">Independent Game Studio — Berlin</div>
   <h1 class="hero-title">
-    Games that <br class="hero-br">
-    <span class="line-highlight">people love.</span>
+    Classic games,<br>
+    <span class="grad">crafted with care.</span>
   </h1>
   <p class="hero-sub">
-    We build classic mobile games that respect your time, your privacy,
-    and your intelligence. No dark patterns. No subscriptions. Just great games.
+    We build mobile games that respect your <strong>time</strong>, your <strong>privacy</strong>,
+    and your <strong>intelligence</strong>. No dark patterns. No subscriptions. Just great games.
   </p>
   <div class="hero-actions">
     <a href="#games" class="btn-primary">Explore Our Games</a>
-    <a href="#contact" class="btn-ghost">Get in Touch</a>
+    <a href="https://apps.apple.com/app/id6774253243" target="_blank" rel="noopener" class="btn-ghost">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download on iOS
+    </a>
   </div>
-  <div class="hero-platform">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-    Available on iOS
+
+  <div class="hero-cards" aria-hidden="true">
+    <div class="pcard pcard-1 dark"><div class="corner">A<br>♠</div><div class="pip">♠</div></div>
+    <div class="pcard pcard-2 red"><div class="corner">K<br>♥</div><div class="pip">♥</div></div>
+    <div class="pcard pcard-3 gold"><div class="corner">R<br>★</div><div class="pip">★</div></div>
+    <div class="pcard pcard-4 red"><div class="corner">Q<br>♦</div><div class="pip">♦</div></div>
+    <div class="pcard pcard-5 dark"><div class="corner">J<br>♣</div><div class="pip">♣</div></div>
   </div>
+
 </section>
 
 <!-- ── NUMBERS ── -->
 <div id="numbers">
   <div class="numbers-grid">
     <div class="number-item reveal">
-      <div class="number-value">8</div>
-      <div class="number-label">Games in Pipeline</div>
+      <div class="number-value">2</div>
+      <div class="number-label">Games Live on the App Store</div>
     </div>
     <div class="number-item reveal">
-      <div class="number-value">0</div>
-      <div class="number-label">Trackers. Ever.</div>
+      <div class="number-value">8</div>
+      <div class="number-label">Titles Planned by 2027</div>
     </div>
     <div class="number-item reveal">
       <div class="number-value">4</div>
@@ -802,7 +1033,7 @@
     </div>
     <div class="number-item reveal">
       <div class="number-value">100%</div>
-      <div class="number-label">Offline-First</div>
+      <div class="number-label">Offline-First. No Accounts.</div>
     </div>
   </div>
 </div>
@@ -814,209 +1045,189 @@
     <h2 class="section-title reveal">The Klara Series.</h2>
     <p class="section-sub reveal">
       A growing family of classic games — beautifully designed, privacy-first,
-      and built on a shared codebase that lets us ship a new title every few weeks.
+      and built on a shared foundation that lets us ship a new title every few weeks.
     </p>
 
-    <!-- Featured game -->
-    <div class="game-card game-card-featured reveal" style="margin-top:48px;">
-      <div class="game-card-header solitaire" style="height:280px;">
-        <div class="card-glow" style="background:#a855f7;left:-40px;top:-40px;"></div>
-        <div class="card-glow" style="background:#3b0764;right:-40px;bottom:-40px;"></div>
-        <img src="solitaire-icon.png" class="game-icon" style="width:120px;height:120px;" alt="Solitaire Klara" />
-      </div>
-      <div class="game-card-body">
-        <span class="game-status status-live">Live on App Store</span>
-        <h3 class="game-name" style="font-size:2rem;">Solitaire Klara</h3>
-        <p class="game-desc">
-          Full Klondike Solitaire for iOS. 3 difficulty levels, 5 themes, 6 card back designs,
-          smart hint system, undo, auto-move, interactive tutorial — and zero ads, zero tracking.
-          Available now as a free download with optional one-time upgrade.
-        </p>
-        <div class="game-tags" style="margin-bottom:20px;">
-          <span class="game-tag">iOS</span>
-          <span class="game-tag">Klondike</span>
-          <span class="game-tag">Free + Premium</span>
-          <span class="game-tag">4 Languages</span>
-          <span class="game-tag">Offline</span>
-        </div>
-        <a href="https://apps.apple.com/app/id6774253243" target="_blank" class="btn-primary" style="display:inline-block;font-size:0.9rem;padding:10px 24px;">View on App Store →</a>
-      </div>
-    </div>
+    <div class="live-grid">
 
-    <!-- Upcoming grid -->
-    <p class="section-tag reveal" style="margin-top:72px;">Coming Soon</p>
-    <div class="games-grid" style="margin-top:24px;">
-
-      <div class="game-card reveal">
-        <div class="game-card-header" style="background:linear-gradient(135deg,#4a0030,#c2185b);height:160px;">
-          <div class="card-glow" style="background:#e91e8c;left:-40px;top:-40px;"></div>
-          <div class="game-icon-placeholder" style="background:linear-gradient(135deg,#4a0030,#c2185b);width:72px;height:72px;font-size:2rem;">🔢</div>
+      <!-- Solitaire Klara -->
+      <div class="live-card reveal">
+        <div class="live-stage solitaire">
+          <div class="stage-glow" style="background:#8b5cf6; top:-80px; left:-60px;"></div>
+          <div class="phone">
+            <div class="phone-screen felt-purple">
+              <div class="mini-topbar">
+                <div style="display:flex;gap:4px;">
+                  <div class="mini-slot filled-back"></div>
+                  <div class="mini-slot filled-face"><span class="r">Q♥</span></div>
+                </div>
+                <div style="display:flex;gap:4px;">
+                  <div class="mini-slot filled-face"><span class="b">A♠</span></div>
+                  <div class="mini-slot filled-face"><span class="r">2♥</span></div>
+                  <div class="mini-slot"></div>
+                  <div class="mini-slot"></div>
+                </div>
+              </div>
+              <div class="mini-cols">
+                <div class="mini-col"><div class="mini-card face b">K♠</div></div>
+                <div class="mini-col"><div class="mini-card back"></div><div class="mini-card face r">7♦</div></div>
+                <div class="mini-col"><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card face b">9♣</div></div>
+                <div class="mini-col"><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card face r">Q♦</div><div class="mini-card face b">J♠</div></div>
+                <div class="mini-col"><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card face r">4♥</div></div>
+                <div class="mini-col"><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card face b">10♣</div></div>
+                <div class="mini-col"><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card back"></div><div class="mini-card face r">6♦</div><div class="mini-card face b">5♣</div></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="game-card-body">
+        <div class="live-body">
+          <span class="game-status status-live">Live on App Store</span>
+          <h3 class="game-name">Solitaire Klara</h3>
+          <p class="game-desc">
+            Full Klondike Solitaire for iOS. Three difficulty levels, five themes, six card back
+            designs, smart hints, undo, auto-move, and an interactive tutorial — with zero ads
+            and zero tracking. Free download with an optional one-time premium upgrade.
+          </p>
+          <div class="game-tags">
+            <span class="game-tag">iOS</span>
+            <span class="game-tag">Klondike</span>
+            <span class="game-tag">Free + Premium</span>
+            <span class="game-tag">4 Languages</span>
+            <span class="game-tag">Offline</span>
+          </div>
+          <a href="https://apps.apple.com/app/id6774253243" target="_blank" rel="noopener" class="btn-primary">View on App Store →</a>
+        </div>
+      </div>
+
+      <!-- Sudoku Roza -->
+      <div class="live-card reveal">
+        <div class="live-stage sudoku">
+          <div class="stage-glow" style="background:#ec4899; top:-80px; right:-60px;"></div>
+          <div class="phone">
+            <div class="phone-screen felt-rose">
+              <div class="mini-sudoku">
+                <div class="su-cell given">5</div><div class="su-cell">3</div><div class="su-cell"></div><div class="su-cell hl"></div><div class="su-cell given">7</div><div class="su-cell hl"></div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell given">2</div>
+                <div class="su-cell given">6</div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell given">1</div><div class="su-cell hl given">9</div><div class="su-cell given">5</div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell"></div>
+                <div class="su-cell"></div><div class="su-cell given">9</div><div class="su-cell given">8</div><div class="su-cell hl"></div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell given">6</div><div class="su-cell"></div>
+                <div class="su-cell given">8</div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell hl"></div><div class="su-cell given">6</div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell given">3</div>
+                <div class="su-cell given">4</div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell sel">8</div><div class="su-cell hl"></div><div class="su-cell given">3</div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell given">1</div>
+                <div class="su-cell given">7</div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell hl"></div><div class="su-cell given">2</div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell given">6</div>
+                <div class="su-cell"></div><div class="su-cell given">6</div><div class="su-cell"></div><div class="su-cell hl"></div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell given">2</div><div class="su-cell given">8</div><div class="su-cell"></div>
+                <div class="su-cell"></div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell given">4</div><div class="su-cell hl given">1</div><div class="su-cell given">9</div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell given">5</div>
+                <div class="su-cell"></div><div class="su-cell"></div><div class="su-cell"></div><div class="su-cell hl"></div><div class="su-cell given">8</div><div class="su-cell hl"></div><div class="su-cell"></div><div class="su-cell given">7</div><div class="su-cell given">9</div>
+              </div>
+              <div class="mini-numrow">
+                <div class="mini-num">1</div><div class="mini-num">2</div><div class="mini-num">3</div><div class="mini-num">4</div><div class="mini-num">5</div><div class="mini-num">6</div><div class="mini-num">7</div><div class="mini-num" style="background:#f472b6;">8</div><div class="mini-num">9</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="live-body">
           <span class="game-status status-live">Live on App Store</span>
           <h3 class="game-name">Sudoku Roza</h3>
-          <p class="game-desc">Beautiful, focused Sudoku for iOS. Daily Challenge, Achievements, 4 difficulty levels, smart hints, and zero ads. Free with optional Premium upgrade.</p>
-          <div class="game-tags" style="margin-bottom:16px;">
+          <p class="game-desc">
+            Beautiful, focused Sudoku for iOS. Daily challenges, achievements, four difficulty
+            levels, and smart hints — no ads, no account, no noise. Free download with an
+            optional one-time premium upgrade.
+          </p>
+          <div class="game-tags">
             <span class="game-tag">iOS</span>
-            <span class="game-tag">Free + Premium</span>
             <span class="game-tag">Daily Challenge</span>
+            <span class="game-tag">Free + Premium</span>
             <span class="game-tag">4 Languages</span>
+            <span class="game-tag">Offline</span>
           </div>
-        </div>
-      </div>
-
-      <div class="game-card reveal">
-        <div class="game-card-header" style="background:linear-gradient(135deg,#1c1917,#44403c);height:160px;">
-          <div class="card-glow" style="background:#78716c;left:-40px;top:-40px;"></div>
-          <div class="game-icon-placeholder" style="background:linear-gradient(135deg,#292524,#57534e);width:72px;height:72px;font-size:2rem;">🕷️</div>
-        </div>
-        <div class="game-card-body">
-          <span class="game-status status-dev">Aug. 2026</span>
-          <h3 class="game-name">Spider Klara</h3>
-          <p class="game-desc">Spider Solitaire — the most satisfying variant. Same polish, same values. Premium.</p>
-        </div>
-      </div>
-
-      <div class="game-card reveal">
-        <div class="game-card-header" style="background:linear-gradient(135deg,#14532d,#15803d);height:160px;">
-          <div class="card-glow" style="background:#16a34a;left:-40px;top:-40px;"></div>
-          <div class="game-icon-placeholder" style="background:linear-gradient(135deg,#14532d,#166534);width:72px;height:72px;font-size:2rem;">💣</div>
-        </div>
-        <div class="game-card-body">
-          <span class="game-status status-dev">Sep. 2026</span>
-          <h3 class="game-name">Minesweeper Klara</h3>
-          <p class="game-desc">The classic, reimagined with beautiful design. Ad-supported, free.</p>
-        </div>
-      </div>
-
-      <div class="game-card reveal">
-        <div class="game-card-header" style="background:linear-gradient(135deg,#7c2d12,#c2410c);height:160px;">
-          <div class="card-glow" style="background:#ea580c;left:-40px;top:-40px;"></div>
-          <div class="game-icon-placeholder" style="background:linear-gradient(135deg,#7c2d12,#9a3412);width:72px;height:72px;font-size:2rem;">🔢</div>
-        </div>
-        <div class="game-card-body">
-          <span class="game-status status-dev">Oct. 2026</span>
-          <h3 class="game-name">2048 Klara</h3>
-          <p class="game-desc">Addictive number merging with a clean, focused UI. Ad-supported, free.</p>
-        </div>
-      </div>
-
-      <div class="game-card reveal">
-        <div class="game-card-header" style="background:linear-gradient(135deg,#1e1b4b,#3730a3);height:160px;">
-          <div class="card-glow" style="background:#4f46e5;left:-40px;top:-40px;"></div>
-          <div class="game-icon-placeholder" style="background:linear-gradient(135deg,#1e1b4b,#312e81);width:72px;height:72px;font-size:2rem;">🧩</div>
-        </div>
-        <div class="game-card-body">
-          <span class="game-status status-dev">Nov. 2026</span>
-          <h3 class="game-name">Memory Klara</h3>
-          <p class="game-desc">Classic memory card game with beautiful illustrations. Ad-supported, free.</p>
-        </div>
-      </div>
-
-      <div class="game-card reveal">
-        <div class="game-card-header" style="background:linear-gradient(135deg,#4a1d96,#6d28d9);height:160px;">
-          <div class="card-glow" style="background:#7c3aed;left:-40px;top:-40px;"></div>
-          <div class="game-icon-placeholder" style="background:linear-gradient(135deg,#4c1d95,#5b21b6);width:72px;height:72px;font-size:2rem;">🀄</div>
-        </div>
-        <div class="game-card-body">
-          <span class="game-status status-dev">Q1 2027</span>
-          <h3 class="game-name">Mahjong Klara</h3>
-          <p class="game-desc">Mahjong Solitaire — meditative, beautiful, deeply polished. Premium.</p>
-        </div>
-      </div>
-
-      <div class="game-card reveal">
-        <div class="game-card-header" style="background:linear-gradient(135deg,#0f172a,#1e3a5f);height:160px;">
-          <div class="card-glow" style="background:#2563eb;left:-40px;top:-40px;"></div>
-          <div class="game-icon-placeholder" style="background:linear-gradient(135deg,#0f172a,#1e3a5f);width:72px;height:72px;font-size:2rem;">🃏</div>
-        </div>
-        <div class="game-card-body">
-          <span class="game-status status-dev">Q2 2027</span>
-          <h3 class="game-name">FreeCell Klara</h3>
-          <p class="game-desc">FreeCell — every deal is winnable. Strategy-focused solitaire. Premium.</p>
+          <span class="btn-soon">On the App Store</span>
         </div>
       </div>
 
     </div>
-  </div>
-</section>
 
-<!-- ── VISION ── -->
-<section id="vision">
-  <div class="section-inner">
-    <div class="vision-grid">
-      <div>
-        <p class="section-tag reveal">Our Vision</p>
-        <h2 class="section-title reveal">The world deserves<br>better mobile games.</h2>
-        <p class="section-sub reveal">
-          The mobile gaming market is dominated by manipulative mechanics,
-          aggressive monetization, and disposable experiences.
-          We are building the alternative.
-        </p>
-
-        <div class="vision-pillars">
-          <div class="pillar reveal">
-            <div class="pillar-icon">🎯</div>
-            <div class="pillar-title">Focus</div>
-            <div class="pillar-text">One game at a time. Done right.</div>
-          </div>
-          <div class="pillar reveal">
-            <div class="pillar-icon">🔒</div>
-            <div class="pillar-title">Privacy</div>
-            <div class="pillar-text">No data collected. No tracking. Ever.</div>
-          </div>
-          <div class="pillar reveal">
-            <div class="pillar-icon">✨</div>
-            <div class="pillar-title">Polish</div>
-            <div class="pillar-text">Details matter. We sweat the small stuff.</div>
-          </div>
-          <div class="pillar reveal">
-            <div class="pillar-icon">❤️</div>
-            <div class="pillar-title">Craft</div>
-            <div class="pillar-text">Every game is made with genuine love.</div>
-          </div>
-        </div>
+    <!-- Coming soon -->
+    <div class="soon-heading reveal">
+      <div class="soon-title">Coming Soon</div>
+      <div class="soon-note">One new title every few weeks — same quality, same values.</div>
+    </div>
+    <div class="soon-grid">
+      <div class="soon-card reveal">
+        <div class="soon-icon" style="background:linear-gradient(135deg,#1c1917,#44403c);color:#e7e5e4;">♠</div>
+        <div class="soon-name">Spider Klara</div>
+        <div class="soon-desc">Spider Solitaire — the most satisfying variant, with the same polish.</div>
+        <div class="soon-date">Aug 2026</div>
       </div>
-
-      <div class="vision-quote reveal">
-        <div class="vision-quote-mark">"</div>
-        <p class="vision-quote-text">
-          The best mobile games don't feel like products.
-          They feel like <em>time well spent.</em>
-        </p>
-        <p class="vision-quote-author">— Rixdorf Studios</p>
+      <div class="soon-card reveal">
+        <div class="soon-icon" style="background:linear-gradient(135deg,#14532d,#166534);color:#bbf7d0;">✹</div>
+        <div class="soon-name">Minesweeper Klara</div>
+        <div class="soon-desc">The classic, reimagined with beautiful design and buttery controls.</div>
+        <div class="soon-date">Sep 2026</div>
+      </div>
+      <div class="soon-card reveal">
+        <div class="soon-icon" style="background:linear-gradient(135deg,#7c2d12,#9a3412);color:#fed7aa;font-size:0.95rem;">2048</div>
+        <div class="soon-name">2048 Klara</div>
+        <div class="soon-desc">Addictive number merging with a clean, focused interface.</div>
+        <div class="soon-date">Oct 2026</div>
+      </div>
+      <div class="soon-card reveal">
+        <div class="soon-icon" style="background:linear-gradient(135deg,#1e1b4b,#312e81);color:#c7d2fe;">❖</div>
+        <div class="soon-name">Memory Klara</div>
+        <div class="soon-desc">The classic pairs game with beautiful illustrated card sets.</div>
+        <div class="soon-date">Nov 2026</div>
+      </div>
+      <div class="soon-card reveal">
+        <div class="soon-icon" style="background:linear-gradient(135deg,#4c1d95,#5b21b6);color:#ddd6fe;">🀄</div>
+        <div class="soon-name">Mahjong Klara</div>
+        <div class="soon-desc">Mahjong Solitaire — meditative, beautiful, deeply polished.</div>
+        <div class="soon-date">Q1 2027</div>
+      </div>
+      <div class="soon-card reveal">
+        <div class="soon-icon" style="background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#bfdbfe;">♣</div>
+        <div class="soon-name">FreeCell Klara</div>
+        <div class="soon-desc">Every deal is winnable. Strategy-focused solitaire at its best.</div>
+        <div class="soon-date">Q2 2027</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── VALUES ── -->
-<section id="values">
+<!-- ── PRINCIPLES ── -->
+<section id="principles">
   <div class="section-inner">
     <p class="section-tag reveal">What We Stand For</p>
-    <h2 class="section-title reveal">Principles we don't compromise on.</h2>
+    <h2 class="section-title reveal">The world deserves<br>better mobile games.</h2>
+    <p class="section-sub reveal">
+      The mobile market is dominated by manipulative mechanics, aggressive monetization,
+      and disposable experiences. We are building the alternative — and these are the
+      principles we don't compromise on.
+    </p>
 
-    <div class="values-grid">
-      <div class="value-card reveal">
-        <div class="value-icon">🚫</div>
-        <div class="value-title">No Dark Patterns.</div>
-        <div class="value-text">No manipulative mechanics, no fake urgency, no pay-to-win. Our premium titles are 100% ad-free. Always transparent about what you're getting.</div>
+    <div class="principles-grid">
+      <div class="principle reveal">
+        <div class="principle-num">01</div>
+        <div class="principle-title">No Dark Patterns</div>
+        <div class="principle-text">No fake urgency, no pay-to-win, no manipulative mechanics. One fair price, and you own the game. Always transparent about what you're getting.</div>
       </div>
-      <div class="value-card reveal">
-        <div class="value-icon">🌍</div>
-        <div class="value-title">Accessible from Day One</div>
-        <div class="value-text">Multiple languages, adaptive layouts, and thoughtful UX — so every player feels welcome.</div>
+      <div class="principle reveal">
+        <div class="principle-num">02</div>
+        <div class="principle-title">Privacy First</div>
+        <div class="principle-text">No accounts, no ads, no personal data collected. Your game progress lives on your device — and stays there.</div>
       </div>
-      <div class="value-card reveal">
-        <div class="value-icon">⚡</div>
-        <div class="value-title">Offline-First</div>
-        <div class="value-text">Our games work without internet. Always. Because sometimes you just want to play on a plane.</div>
+      <div class="principle reveal">
+        <div class="principle-num">03</div>
+        <div class="principle-title">Accessible from Day One</div>
+        <div class="principle-text">Four languages, adaptive layouts, interactive tutorials, and thoughtful UX — so every player feels welcome.</div>
       </div>
-      <div class="value-card reveal">
-        <div class="value-icon">🏗️</div>
-        <div class="value-title">Built to Last</div>
-        <div class="value-text">Clean architecture, no external SDKs with hidden tracking, maintained long after launch.</div>
+      <div class="principle reveal">
+        <div class="principle-num">04</div>
+        <div class="principle-title">Built to Last</div>
+        <div class="principle-text">Offline-first, no bloated SDKs, clean native SwiftUI architecture — maintained and improved long after launch.</div>
       </div>
+    </div>
+
+    <div class="studio-quote reveal">
+      <p class="studio-quote-text">
+        “The best mobile games don't feel like products.<br>
+        They feel like <em>time well spent</em>.”
+      </p>
     </div>
   </div>
 </section>
@@ -1036,87 +1247,78 @@
         <div class="roadmap-content">
           <div class="roadmap-time">May 2026 — Live ✓</div>
           <div class="roadmap-title">Solitaire Klara — App Store Launch</div>
-          <div class="roadmap-desc">Full Klondike Solitaire: 3 difficulties, 5 themes, 6 card backs, smart hints, interactive tutorial, StoreKit 2 premium upgrade. First title establishing the Klara Series quality standard.</div>
+          <div class="roadmap-desc">Full Klondike Solitaire: 3 difficulties, 5 themes, 6 card backs, smart hints, interactive tutorial, StoreKit 2 premium upgrade. The first title, establishing the Klara Series quality standard.</div>
         </div>
       </div>
-
       <div class="roadmap-item reveal">
         <div class="roadmap-dot active"></div>
         <div class="roadmap-content">
           <div class="roadmap-time">June 2026 — Live ✓</div>
           <div class="roadmap-title">Sudoku Roza — Second Title</div>
-          <div class="roadmap-desc">Beautiful Sudoku with Daily Challenge, 4 difficulties, Achievements, smart hints, and full StoreKit 2 Premium upgrade. Free download on App Store.</div>
+          <div class="roadmap-desc">Beautiful Sudoku with Daily Challenge, 4 difficulties, achievements, smart hints, and a one-time premium upgrade. Proof that the shared foundation works: second title shipped within weeks.</div>
         </div>
       </div>
-
       <div class="roadmap-item reveal">
         <div class="roadmap-dot future"></div>
         <div class="roadmap-content">
           <div class="roadmap-time">Aug – Nov 2026</div>
           <div class="roadmap-title">Portfolio Expansion — 4 More Titles</div>
-          <div class="roadmap-desc">Spider Klara (Aug), Minesweeper Klara (Sep), 2048 Klara (Oct), Memory Klara (Nov). Mix of premium and ad-supported models. Growing recurring revenue from a diversified portfolio.</div>
+          <div class="roadmap-desc">Spider Klara (Aug), Minesweeper Klara (Sep), 2048 Klara (Oct), Memory Klara (Nov). A mix of premium and free titles, building recurring revenue from a diversified portfolio.</div>
         </div>
       </div>
-
       <div class="roadmap-item reveal">
         <div class="roadmap-dot future"></div>
         <div class="roadmap-content">
-          <div class="roadmap-time">Q1–Q2 2027</div>
+          <div class="roadmap-time">Q1 – Q2 2027</div>
           <div class="roadmap-title">Mahjong + FreeCell — Premium Catalogue Complete</div>
-          <div class="roadmap-desc">8 titles live. Full Klara Series established as a recognizable brand. App Store cross-promotion across all titles. Exploration of iPad and Mac Catalyst versions.</div>
+          <div class="roadmap-desc">Eight titles live. The Klara Series established as a recognizable brand, with cross-promotion across all titles and exploration of iPad and Mac versions.</div>
         </div>
       </div>
-
       <div class="roadmap-item reveal">
         <div class="roadmap-dot future"></div>
         <div class="roadmap-content">
           <div class="roadmap-time">2027+</div>
           <div class="roadmap-title">Studio Scale — Team & New Series</div>
-          <div class="roadmap-desc">First hires. Android expansion of top-performing titles. Potential second game series beyond Klara. Rixdorf Studios as a recognized name in privacy-first indie gaming in Europe.</div>
+          <div class="roadmap-desc">First hires. Android expansion of top-performing titles. A potential second game series beyond Klara. Rixdorf Studios as a recognized name in privacy-first indie gaming in Europe.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── ABOUT ── -->
-<section id="about">
+<!-- ── STUDIO ── -->
+<section id="studio">
   <div class="section-inner">
     <p class="section-tag reveal">The Studio</p>
-    <h2 class="section-title reveal">Small team. Big ambition.</h2>
+    <h2 class="section-title reveal">Small studio. Big ambition.</h2>
     <p class="section-sub reveal">
-      Rixdorf Studios is an independent game studio based in Berlin, Germany.
-      We build premium mobile games with a simple belief: excellent games and
-      honest business can coexist.
+      Rixdorf Studios is an independent game studio based in Berlin, founded in 2026
+      by Bruno Herzog. We believe excellent games and honest business can coexist.
     </p>
+
+    <p class="studio-story reveal">
+      The studio takes its name from <strong>Rixdorf</strong> — the historic village at the
+      heart of Berlin-Neukölln. Like its namesake, the studio values craft over noise:
+      every game is designed, built, and polished in-house, on a shared native foundation
+      that lets a small team ship at remarkable speed without ever cutting corners.
+    </p>
+
     <div class="about-grid reveal">
       <div class="about-item">
-        <div class="about-icon">📍</div>
-        <div>
-          <div class="about-label">Location</div>
-          <div class="about-value">Berlin, Germany</div>
-        </div>
+        <div class="about-label">Founded</div>
+        <div class="about-value">2026 · Berlin, Germany</div>
       </div>
       <div class="about-item">
-        <div class="about-icon">📱</div>
-        <div>
-          <div class="about-label">Platform</div>
-          <div class="about-value">iOS (SwiftUI)</div>
-        </div>
+        <div class="about-label">Platform</div>
+        <div class="about-value">iOS · Native SwiftUI</div>
       </div>
       <div class="about-item">
-        <div class="about-icon">🎮</div>
-        <div>
-          <div class="about-label">Focus</div>
-          <div class="about-value">Classic Puzzle Games</div>
-        </div>
+        <div class="about-label">Focus</div>
+        <div class="about-value">Classic Puzzle & Card Games</div>
       </div>
       <div class="about-item">
-        <div class="about-icon">✉️</div>
-        <div>
-          <div class="about-label">Contact</div>
-          <div class="about-value"><a href="mailto:rixdorf.studio@gmail.com" style="color:var(--purple-light);text-decoration:none;">rixdorf.studio@gmail.com</a></div>
-        </div>
+        <div class="about-label">Contact</div>
+        <div class="about-value"><a href="mailto:rixdorf.studio@gmail.com">rixdorf.studio@gmail.com</a></div>
       </div>
     </div>
   </div>
@@ -1128,22 +1330,23 @@
     <div class="contact-box reveal">
       <h2 class="contact-title">Let's talk.</h2>
       <p class="contact-sub">
-        Press inquiries, partnerships, feedback, or just a hello —
-        we'd love to hear from you.
+        Press inquiries, partnerships, feedback, or just a hello —<br>we'd love to hear from you.
       </p>
-      <a href="mailto:rixdorf.studio@gmail.com" class="contact-email">rixdorf.studio@gmail.com</a>
+      <a href="mailto:rixdorf.studio@gmail.com" class="btn-primary">rixdorf.studio@gmail.com</a>
     </div>
   </div>
 </section>
 
 <!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-logo">Rixdorf<span>Studios</span></div>
-  <div class="footer-copy">© 2026 Rixdorf Studios. Berlin, Germany.</div>
-  <div class="footer-links">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Imprint</a>
-    <a href="mailto:rixdorf.studio@gmail.com">Contact</a>
+  <div class="footer-inner">
+    <div class="footer-logo">Rixdorf<span>&nbsp;Studios</span></div>
+    <div class="footer-copy">© 2026 Rixdorf Studios · Berlin, Germany</div>
+    <div class="footer-links">
+      <a href="/privacy/">Privacy Policy</a>
+      <a href="/imprint/">Imprint</a>
+      <a href="mailto:rixdorf.studio@gmail.com">Contact</a>
+    </div>
   </div>
 </footer>
 
@@ -1158,42 +1361,31 @@
       W = canvas.width  = window.innerWidth;
       H = canvas.height = window.innerHeight;
     }
-
     function initStars() {
       stars = [];
-      const count = Math.floor((W * H) / 8000);
+      const count = Math.floor((W * H) / 9000);
       for (let i = 0; i < count; i++) {
         stars.push({
           x: Math.random() * W,
           y: Math.random() * H,
-          r: Math.random() * 1.4 + 0.2,
-          a: Math.random(),
+          r: Math.random() * 1.3 + 0.2,
+          a: Math.random() * 0.8 + 0.1,
           speed: Math.random() * 0.003 + 0.001,
           phase: Math.random() * Math.PI * 2,
         });
       }
     }
-
     function draw(t) {
       ctx.clearRect(0, 0, W, H);
       stars.forEach(s => {
-        const alpha = s.a * (0.5 + 0.5 * Math.sin(t * s.speed * 1000 + s.phase));
+        const alpha = s.a * (0.45 + 0.55 * Math.sin(t * s.speed + s.phase));
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(200,180,255,${alpha})`;
         ctx.fill();
       });
-
-      // gradient overlay
-      const grad = ctx.createRadialGradient(W/2, H*0.3, 0, W/2, H*0.3, W*0.7);
-      grad.addColorStop(0, 'rgba(124,58,237,0.08)');
-      grad.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, W, H);
-
       requestAnimationFrame(draw);
     }
-
     window.addEventListener('resize', () => { resize(); initStars(); });
     resize(); initStars();
     requestAnimationFrame(draw);
@@ -1209,32 +1401,18 @@
           io.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
     els.forEach(el => io.observe(el));
   })();
 
-  /* ── SMOOTH NAV HIGHLIGHT ── */
+  /* ── NAV BACKGROUND ON SCROLL ── */
   (function() {
     const nav = document.querySelector('nav');
     window.addEventListener('scroll', () => {
       nav.style.background = window.scrollY > 40
-        ? 'rgba(26,10,46,0.95)'
-        : 'rgba(26,10,46,0.7)';
+        ? 'rgba(10,5,20,0.92)'
+        : 'rgba(10,5,20,0.65)';
     });
-  })();
-
-  /* ── COUNTER ANIMATION ── */
-  (function() {
-    const items = document.querySelectorAll('.number-value');
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        io.unobserve(e.target);
-        // just a subtle pop-in, values are already set
-        e.target.style.animation = 'fadeUp 0.6s forwards';
-      });
-    }, { threshold: 0.5 });
-    items.forEach(el => io.observe(el));
   })();
 </script>
 
